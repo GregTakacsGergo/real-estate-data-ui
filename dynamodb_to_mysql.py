@@ -41,14 +41,14 @@ def update_mysql_table(data):
 
         for item in data:
             # Customize the following query and data as per your MySQL table structure and the data from DynamoDB
-            query = """INSERT INTO real_estate_market_data (date, avg_sqm_price_eur, avg_sqm_price_huf,
+            query = """INSERT INTO real_estate_market_data (date, universal_sqm_price_eur, universal_sqm_price_huf,
                                one_million_huf_to_eur) 
                         VALUES (%s, %s, %s, %s) 
                         ON DUPLICATE KEY UPDATE 
-                        avg_sqm_price_huf = VALUES(avg_sqm_price_huf),
-                        avg_sqm_price_eur = VALUES(avg_sqm_price_eur), 
+                        universal_sqm_price_huf = VALUES(universal_sqm_price_huf),
+                        universal_sqm_price_eur = VALUES(universal_sqm_price_eur), 
                         one_million_huf_to_eur = VALUES(one_million_huf_to_eur)"""
-            cursor.execute(query, (item['date'], item['avg_sqm_price_eur'], item['avg_sqm_price_huf'], item['one_million_huf_to_eur']))
+            cursor.execute(query, (item['date'], item['universal_sqm_price_eur'], item['universal_sqm_price_huf'], item['one_million_huf_to_eur']))
         real_db.commit()
         print("Data updated in MySQL table successfully")
         
@@ -64,7 +64,7 @@ def fetch_data_from_mysqldb():
         return
     try:
         cursor = real_db.cursor()
-        query = "SELECT date, avg_sqm_price_huf, avg_sqm_price_eur, one_million_huf_to_eur FROM real_estate_market_data ORDER BY date"
+        query = "SELECT date, universal_sqm_price_huf, universal_sqm_price_eur, one_million_huf_to_eur FROM real_estate_market_data ORDER BY date"
         cursor.execute(query)
         result = cursor.fetchall()
         return result

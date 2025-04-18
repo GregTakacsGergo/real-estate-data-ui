@@ -38,7 +38,6 @@ def update_mysql_table(data):
         return
     try:
         cursor = real_db.cursor()
-
         for item in data:
             # Customize the following query and data as per your MySQL table structure and the data from DynamoDB
             query = """INSERT INTO real_estate_market_data (date, universal_sqm_price_eur, universal_sqm_price_huf,
@@ -48,16 +47,16 @@ def update_mysql_table(data):
                         universal_sqm_price_huf = VALUES(universal_sqm_price_huf),
                         universal_sqm_price_eur = VALUES(universal_sqm_price_eur), 
                         one_million_huf_to_eur = VALUES(one_million_huf_to_eur)"""
-            cursor.execute(query, (item['date'], item['universal_sqm_price_eur'], item['universal_sqm_price_huf'], item['one_million_huf_to_eur']))
+            cursor.execute(query, (item['date'], item['avg_sqm_price_eur'], item['avg_sqm_price_huf'], item['one_million_huf_to_eur']))
         real_db.commit()
         print("Data updated in MySQL table successfully")
-        
     except Error as e:
         print("Error updating MySQL table", e)
     finally:
         cursor.close()
         close_mysql_real_db(real_db)
         return True
+
 def fetch_data_from_mysqldb():
     real_db = connect_mysql_real_db()    
     if real_db is None:
@@ -81,6 +80,7 @@ def main():
             update_mysql_table(data)
             print("1")
             return True  # Indicate success
+            
         except Exception as e:
             print(f"Error during update: {e}")
             print("2")

@@ -1,5 +1,5 @@
 from tkinter import Tk, Entry, Label, Button, Canvas, PhotoImage, filedialog, simpledialog
-from visualization2 import visualize
+from visualization import visualize
 
 root = Tk()
 root.title("Real Estate Index UI")

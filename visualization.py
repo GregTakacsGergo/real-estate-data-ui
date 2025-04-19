@@ -1,5 +1,6 @@
 from apartment_data_db_mysql import ApartmentDataDatabase
 import matplotlib.pyplot as plt
+import tkinter as tk
 
 dates = []
 prices_huf = []
@@ -8,7 +9,11 @@ inst = ApartmentDataDatabase()
 result = inst.fetch_data_from_db()
 #print (result)
 
-def visualize():
+
+def visualize_and_save(succes_label=None):
+    if not result:
+        return "Nincsenek adatok az adatbázisban!"
+    
     print("Visualizing data...")
     for row in result:
         dates.append(row[0])
@@ -35,4 +40,20 @@ def visualize():
     plt.xticks(rotation=45)
     plt.grid(True)
     plt.tight_layout()
-    plt.show()
+
+ # Itt kérjük be hova mentsük
+    save_path = tk.filedialog.asksaveasfilename(
+        defaultextension=".jpg",
+        filetypes=[("JPEG files", "*.jpg")],
+        title="Save visualization as JPG"
+    )
+    message = ""
+
+    if save_path:
+        fig1.savefig(save_path, format='jpg')
+        message = f"Sikeresen mentve: {save_path}"
+    else:
+        message = "Mentés megszakítva."
+
+    plt.show()  # mindig mutassuk az ábrát a mentéstől függetlenül
+    return message

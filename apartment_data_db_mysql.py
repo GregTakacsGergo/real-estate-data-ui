@@ -5,9 +5,9 @@ class ApartmentDataDatabase:
     def __init__(self):
         self.real_db = func_real_db()
         self.my_cursor = self.real_db.cursor()
-
-    def create_table(self):
         self.connection = self.real_db
+    def create_table(self):
+        
         try:
             self.my_cursor.execute("USE real_db")  
             self.my_cursor.execute("""

@@ -1,7 +1,8 @@
 import pandas as pd
-from apartment_data_db import ApartmentDataDatabase  # ahol az osztályod van
+from apartment_data_db_mysql import ApartmentDataDatabase  
 import os
-
+from tkinter import filedialog
+import openpyxl
 
 def show_data():
     handler = ApartmentDataDatabase()
@@ -22,7 +23,11 @@ def show_data():
                                               title="Save data as Excel file")
     if save_path:
         df.to_excel(save_path, index=False)
-        success_label.config(text=f"Data saved to {os.path.basename(save_path)}!")
+        print("file saved")
+#        success_label.config(text=f"Data saved to {os.path.basename(save_path)}!")
         os.startfile(save_path)  # automatikusan megnyitja a fájlt
+
     else:
-        success_label.config(text="Save cancelled.")
+        print("file not saved")
+#        success_label.config(text="Save cancelled.")
+
